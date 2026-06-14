@@ -8,4 +8,4 @@ PASSWORD = getpass.getpass()
 CONN_HOST = 'localhost'
 CONN_PORT = 5672
 
-API_URL = 'http://localhost:8000/api/'
+API_URL = f'http://{CONN_HOST}:8000/api/'

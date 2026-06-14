@@ -13,17 +13,31 @@ pet-project
 - Also: RabbitMQ (as main message broker), Celery, Redis (message broker for celery)
 
 ## How to run
-1. Run server on first pc (or terminal session): ``` docker compose up --build ```
-2. Setup environment for client:
+1. Run server on first terminal session: 
+``` 
+docker compose up -d --build
+```
+2. Setup environment for clients:
 ```
 cd client
 python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt 
 ```
-3. Run client.py and register new user with command ***reg***: ``` python client.py ```
-4. Run exec.py on second pc (or terminal session): ``` python exec.py <room> ```
-5. Run send.py on third pc (or terminal session): ``` python send.py <room> ```
+3. If you want, run client.py and register new user with command ***reg***:
+```
+python client.py
+```
+4. Run exec.py on second terminal session:
+```
+python exec.py <roomname>
+```
+5. Run send.py on third terminal session:
+```
+python send.py <roomname>
+```
 
-All commands (and keys) from send.py (third pc) will send to exec.py (second pc) and will execute there.
+All commands (and keys) from send.py will send to exec.py and will execute there.
+You can use three pc, just edit CONN_HOST in client/config.py, 
 
-PS: root password 1234
+PS: default user - root, 1234
