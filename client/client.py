@@ -1,5 +1,4 @@
 import getpass
-import os
 import sys
 from collections.abc import Callable
 
@@ -22,7 +21,9 @@ def register():
 def login():
     """ Указать логин и пароль """
 
-    api.auth = (input("Login: "), getpass.getpass())
+    config.USER = input("Login: ")
+    config.PASSWORD = getpass.getpass()
+    api.auth = (config.USER, config.PASSWORD)
 
 
 def myid():
@@ -129,9 +130,5 @@ def main():
 
 
 if __name__ == '__main__':
-    api.auth = (
-        os.getenv("USERNAME", input("User: ")),
-        os.getenv("PASSWORD", getpass.getpass())
-    )
-    print(api.auth)
+    api.auth = (config.USER, config.PASSWORD)
     main()
