@@ -14,35 +14,34 @@ class API:
 
         self.__session = Session()
         self.__session.headers.update({'Content-Type': 'application/json'})
-
-        if auth:
-            self.__session.auth = auth
+        self.__auth = auth
 
     @property
     def auth(self) -> AuthData:
-        return self.__session.auth
+        return self.__auth
 
     @auth.setter
     def auth(self, value: AuthData):
-        self.__session.auth = value
+        self.__auth = value
 
     def connects(self) -> ResponseData:
-        return self.__request(self.__session.get, 'connect/', 200)
+        return self.__auth_request(self.__session.get, 'connect/', 200)
 
     def connect_to_room(self, name: str, password: str) -> ResponseData:
-        return self.__request(self.__session.post, 'connect/', 204, data=json.dumps({'room': name, 'password': password}))
+        return self.__auth_request(self.__session.post, 'connect/', 204, json={'room': name, 'password': password})
 
     def create_room(self, name: str, password: str) -> ResponseData:
-        return self.__request(self.__session.post, 'rooms/', 201, data=json.dumps({'name': name, 'password': password}))
+        return self.__auth_request(self.__session.post, 'rooms/', 201, json={'name': name, 'password': password})
 
     def rooms(self) -> ResponseData:
-        return self.__request(self.__session.get, 'rooms/', 200)
+        return self.__auth_request(self.__session.get, 'rooms/', 200)
 
     def register(self) -> ResponseData:
-        return self.__request(self.__session.post, 'user/new/', 201, data=json.dumps({'username': self.auth[0], 'plain_password': self.auth[1]}))
+        return self.__request(self.__session.post, 'user/new/', 201,
+                              json={'username': self.__auth[0], 'plain_password': self.__auth[1]})
 
     def user(self) -> ResponseData:
-        return self.__request(self.__session.get, 'user/', 200)
+        return self.__auth_request(self.__session.get, 'user/', 200)
 
     def apiuser(self) -> str | None:
         ok, data = self.user()
@@ -55,6 +54,9 @@ class API:
                 if item['name'] == room:
                     return f'room{item['id']}'
         return None
+
+    def __auth_request(self, action, suburl: str, ok_code: int = 200, **kwargs) -> ResponseData:
+        return self.__request(action=action, suburl=suburl, ok_code=ok_code, auth=self.__auth, **kwargs)
 
     def __request(self, action, suburl: str, ok_code: int = 200, **kwargs) -> ResponseData:
         response = action(urljoin(self.__api_url, suburl), **kwargs)

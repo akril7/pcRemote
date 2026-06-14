@@ -1,4 +1,5 @@
 .idea/
 .venv/
+.venv2/
 client/.client-venv/
 client/logs/

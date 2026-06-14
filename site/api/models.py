@@ -11,6 +11,7 @@ class ManagerSyncBroker(UserManager):
         broker_api_tasks.create_user.delay(user_id=user.id, password=password)
         return user
 
+
 class UserSyncBroker(AbstractUser):
     objects = ManagerSyncBroker()
 

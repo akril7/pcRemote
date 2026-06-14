@@ -18,7 +18,7 @@ pet-project
 ```
 cd client
 python3 -m venv .venv
-pip install -r client-req.txt 
+pip install -r requirements.txt 
 ```
 3. Run client.py and register new user with command ***reg***: ``` python client.py ```
 4. Run exec.py on second pc (or terminal session): ``` python exec.py <room> ```

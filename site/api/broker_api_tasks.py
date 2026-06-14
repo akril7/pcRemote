@@ -32,6 +32,7 @@ def __api(target):
 
     return endpoint
 
+
 __vhosts = __api("vhosts")
 __users = __api("users")
 __permissions = __api("permissions")
@@ -40,6 +41,7 @@ __permissions = __api("permissions")
 @shared_task
 def create_vhost(vhost_id: int, data: dict = None):
     return __vhosts("put", vhost(vhost_id), data=data)
+
 
 @shared_task
 def delete_vhost(vhost_id: int):
@@ -50,24 +52,32 @@ def delete_vhost(vhost_id: int):
 def create_user(user_id: int, password: str, tag: str = ""):
     return __users("put", user(user_id), data={"password": password, "tags": tag})
 
+
 @shared_task
-def delete_user(user_id: int,):
+def delete_user(user_id: int, ):
     return __users("delete", user(user_id))
+
 
 @shared_task
 def set_permission(vhost_id: int, user_id: int, configure: str = ".*", write: str = ".*", read: str = ".*"):
-    return __permissions("put", vhost(vhost_id), user(user_id), data={"configure": configure, "write": write, "read": read})
+    return __permissions("put", vhost(vhost_id), user(user_id),
+                         data={"configure": configure, "write": write, "read": read})
+
 
 @shared_task
 def delete_permission(vhost_id: int, user_id: int):
     return __permissions("delete", vhost(vhost_id), user(user_id))
 
+
 @shared_task
-def create_vhost_and_set_permission(vhost_id: int, user_id: int, configure: str = ".*", write: str = ".*", read: str = ".*"):
+def create_vhost_and_set_permission(vhost_id: int, user_id: int, configure: str = ".*", write: str = ".*",
+                                    read: str = ".*"):
     return create_vhost(vhost_id), set_permission(vhost_id, user_id, configure, write, read)
+
 
 def vhost(n: int) -> str:
     return f"room{n}"
+
 
 def user(n: int) -> str:
     return f"user{n}"

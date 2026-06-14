@@ -1,4 +1,5 @@
 import getpass
+import os
 import sys
 from collections.abc import Callable
 
@@ -17,10 +18,12 @@ def register():
     else:
         print('Error:', data)
 
+
 def login():
     """ Указать логин и пароль """
 
     api.auth = (input("Login: "), getpass.getpass())
+
 
 def myid():
     """ Получить ID """
@@ -30,6 +33,7 @@ def myid():
         print('ID:', data['id'])
     else:
         print('Error:', data)
+
 
 def rooms():
     """ Получить созданные комнаты """
@@ -42,6 +46,7 @@ def rooms():
     else:
         print('Error:', data)
 
+
 def new_room():
     """ Создать комнату """
 
@@ -51,6 +56,7 @@ def new_room():
     else:
         print('Error', data)
 
+
 def connect_room():
     """ Присоединиться к чужой комнате """
 
@@ -59,6 +65,7 @@ def connect_room():
         print("Connected")
     else:
         print('Error', data)
+
 
 def connects():
     """ Получить комнаты, к которым вы присоединились """
@@ -70,12 +77,14 @@ def connects():
     else:
         print('Error', data)
 
+
 def _help():
     """ Справка по командам """
 
     print(f"--- {_help.__doc__} ---")
     for cmd, func in commands.items():
-        print(f'{cmd}:{func.__doc__}')
+        print(f'{cmd}: {func.__doc__}')
+
 
 def _exit():
     """ Завершить программу """
@@ -93,6 +102,7 @@ commands: dict[str, Callable[[], None]] = {
     'help': _help,
     'exit': _exit,
 }
+
 
 def main():
     with api:
@@ -119,10 +129,9 @@ def main():
 
 
 if __name__ == '__main__':
-    if not hasattr(config, 'USER'):
-        setattr(config, 'USER', input("User: "))
-    if not hasattr(config, 'PASSWORD'):
-        setattr(config, 'PASSWORD', getpass.getpass())
-
-    api.auth = (config.USER, config.PASSWORD)
+    api.auth = (
+        os.getenv("USERNAME", input("User: ")),
+        os.getenv("PASSWORD", getpass.getpass())
+    )
+    print(api.auth)
     main()

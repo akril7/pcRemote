@@ -1,8 +1,3 @@
-import getpass
-
-USER = input('Username: ')
-PASSWORD = getpass.getpass()
-
 LOG = True
 
 CONN_HOST = 'localhost'

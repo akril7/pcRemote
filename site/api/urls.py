@@ -7,6 +7,7 @@ from rest_framework.reverse import reverse
 
 from . import views
 
+
 @api_view(["GET"])
 def api_root_view(request, *_, **kwargs):
     link = lambda x: reverse(x, request=request, format=kwargs.get("format"))
@@ -16,6 +17,7 @@ def api_root_view(request, *_, **kwargs):
         "room's connects manage": link("user-connect"),
         'rooms manage': link("room-list"),
     })
+
 
 class Router(routers.DefaultRouter):
     def get_api_root_view(self, *_, **__):

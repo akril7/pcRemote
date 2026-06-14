@@ -9,5 +9,6 @@ class COLOR:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 def colorize(*args, color: str) -> str:
     return color + ' '.join(args) + COLOR.ENDC
